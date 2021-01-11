@@ -1,4 +1,4 @@
-# CamelSnake
+# CamelSnakeStruct
 
 Easily access camelCased hashes in a ruby_friendly_way.
 Main focus is handling responses from APIs that use camelCased keys.

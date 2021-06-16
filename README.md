@@ -8,7 +8,7 @@ Main focus is handling responses from APIs that use camelCased keys.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'camel_snake'
+gem 'camel_snake_struct'
 ```
 
 And then execute:
@@ -17,7 +17,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install camel_snake
+    $ gem install camel_snake_struct
 
 ## Usage
 

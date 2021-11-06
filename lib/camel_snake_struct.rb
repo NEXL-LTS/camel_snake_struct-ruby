@@ -60,6 +60,9 @@ class CamelSnakeStruct
       else # no method defined for empty arrays as we don't know what it returns
         @_raw_hash[camelize_key]
       end
+    elsif method_name.to_s.end_with?('?')
+      camelize_key = __method_to_key(method_name.to_s.chop)
+      @_raw_hash.key?(camelize_key)
     else
       super
     end
@@ -67,7 +70,7 @@ class CamelSnakeStruct
 
   def respond_to_missing?(method_name, include_private = false)
     camelize_key = __method_to_key(method_name)
-    !camelize_key.nil? || super
+    !camelize_key.nil? || method_name.to_s.end_with?('?') || super
   end
 
   def __method_to_key(method_name)

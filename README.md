@@ -8,7 +8,7 @@ Main focus is handling responses from APIs that use camelCased keys.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'camel_snake'
+gem 'camel_snake_struct'
 ```
 
 And then execute:
@@ -30,10 +30,15 @@ For once of hashes
 
   puts result.version # 1
   puts result.ruby_version # 2.5.0
-  puts result.sites[0].url # https://duckduckgo.com
-  puts result.sites[1].url # https://d.tube/
-  puts result.unknown # NoMethodError
   puts result['version'] # 1
+
+  if result.sites?
+    puts result.sites[0].url # https://duckduckgo.com
+    puts result.sites[1].url # https://d.tube/
+  end
+
+  puts result.people? # false
+  puts result.people # NoMethodError
 ```
 
 Or Learning Structs

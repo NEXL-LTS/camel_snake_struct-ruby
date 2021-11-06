@@ -12,6 +12,8 @@ RSpec.describe CamelSnakeStruct do
     it "responds correctly to missing methods" do
       result = described_class.new('version' => 1, 'rubyVersion' => '2.5.0')
 
+      expect(result).to have_attributes(version?: true, ruby_version?: true, unknown?: false)
+
       expect { result.unknown }.to raise_error(NoMethodError)
     end
 
@@ -96,6 +98,16 @@ RSpec.describe CamelSnakeStruct do
 
       result4 = MyLoadedStruct.new({ 'date' => {} })
       expect(result4.date).to have_attributes(timezone: nil, unix_time: nil)
+    end
+
+    it "responds correctly to missing keys" do
+      MyMissingStruct = Class.new(described_class)
+
+      result1 = MyMissingStruct.new('version' => 1, 'rubyVersion' => '2.5.0')
+      expect(result1).to have_attributes(version?: true, rubyVersion?: true, ruby_version?: true, unknown?: false)
+
+      result2 = MyMissingStruct.new('unknown' => nil)
+      expect(result2).to have_attributes(version?: false, rubyVersion?: false, ruby_version?: false, unknown?: true)
     end
   end
 end

@@ -17,7 +17,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install camel_snake
+    $ gem install camel_snake_struct
 
 ## Usage
 

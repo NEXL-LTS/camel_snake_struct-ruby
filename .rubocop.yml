@@ -4,7 +4,7 @@ require:
 
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.5
   Exclude:
     - 'vendor/**/*'
 
@@ -19,3 +19,9 @@ Metrics/MethodLength:
 
 Metrics/ClassLength:
   Max: 200
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
+Bundler/GemFilename:
+  Enabled: false

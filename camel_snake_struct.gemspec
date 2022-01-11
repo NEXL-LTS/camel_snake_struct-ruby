@@ -22,4 +22,5 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
   spec.add_dependency 'activesupport', '>= 3.2', '< 8.0'
+  spec.metadata['rubygems_mfa_required'] = 'true'
 end

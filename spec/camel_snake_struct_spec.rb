@@ -109,5 +109,46 @@ RSpec.describe CamelSnakeStruct do
       result2 = MyMissingStruct.new('unknown' => nil)
       expect(result2).to have_attributes(version?: false, rubyVersion?: false, ruby_version?: false, unknown?: true)
     end
+
+    describe '.types_meta_data' do
+      it 'stores types for scalar values' do
+        ScalarStruct = Class.new(described_class)
+        ScalarStruct.example('scalar' => 1)
+
+        expect(ScalarStruct.types_meta_data.keys).to eq(%w[scalar])
+        expect(ScalarStruct.types_meta_data['scalar']).to have_attributes(classes: [Integer], array: false)
+
+        ScalarStruct.example('scalar' => nil)
+        expect(ScalarStruct.types_meta_data['scalar']).to have_attributes(classes: [Integer, NilClass],
+                                                                          array: false)
+      end
+
+      it 'stores types for array scalar values' do
+        AsStruct = Class.new(described_class)
+        AsStruct.example('as' => ["num", nil])
+
+        expect(AsStruct.types_meta_data.keys).to eq(%w[as])
+        expect(AsStruct.types_meta_data['as']).to have_attributes(classes: [String, NilClass], array: true)
+
+        AsStruct.example('as' => [true, :symbol])
+        expect(AsStruct.types_meta_data['as']).to have_attributes(
+          classes: [String, NilClass, TrueClass, Symbol], array: true
+        )
+      end
+
+      it 'stores types for complex values' do
+        ComplexStruct = Class.new(described_class)
+        ComplexStruct.example('complex' => { 'num' => 1 }, 'complex_array' => [{ 'num' => 1 }])
+
+        expect(ComplexStruct.types_meta_data.keys).to eq(%w[complex complex_array])
+        expect(ComplexStruct.types_meta_data['complex']).to have_attributes(array: false)
+        expect(ComplexStruct.types_meta_data['complex'].classes.size).to eq(1)
+        expect(ComplexStruct.types_meta_data['complex'].classes.first.superclass).to eq(described_class)
+
+        expect(ComplexStruct.types_meta_data['complex_array']).to have_attributes(array: true)
+        expect(ComplexStruct.types_meta_data['complex'].classes.size).to eq(1)
+        expect(ComplexStruct.types_meta_data['complex'].classes.first.superclass).to eq(described_class)
+      end
+    end
   end
 end

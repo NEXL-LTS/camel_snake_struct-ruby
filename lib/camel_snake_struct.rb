@@ -3,8 +3,16 @@ require 'active_support/core_ext/string'
 
 class CamelSnakeStruct
   def self.example(data)
+    raise ArgumentError, "Examples are for Learning Structs" if self == CamelSnakeStruct
+
     new_example = new(data)
     walk_example(new_example)
+  end
+
+  Type__Meta__Data = Struct.new(:class_types, :array) do
+    def classes
+      class_types.to_a
+    end
   end
 
   def self.walk_example(new_example)
@@ -15,7 +23,23 @@ class CamelSnakeStruct
       elsif result.is_a?(Array) && result.first.is_a?(CamelSnakeStruct)
         walk_example(result.first)
       end
+
+      store_meta_data(new_example.class, m_name, result)
     end
+  end
+
+  def self.store_meta_data(example_class, m_name, result)
+    types_meta_data = (example_class.types_meta_data[m_name] ||= Type__Meta__Data.new(Set.new, false))
+    if result.is_a?(Array)
+      types_meta_data.array = true
+      result.map(&:class).each { |c| types_meta_data.class_types << c }
+    else
+      types_meta_data.class_types << result.class
+    end
+  end
+
+  def self.types_meta_data
+    @types_meta_data ||= {}
   end
 
   def initialize(hash)

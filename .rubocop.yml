@@ -20,6 +20,12 @@ Metrics/MethodLength:
 Metrics/ClassLength:
   Max: 200
 
+Metrics/CyclomaticComplexity:
+  Max: 9
+
+Metrics/PerceivedComplexity:
+  Max: 9
+
 Gemspec/RequiredRubyVersion:
   Enabled: false
 

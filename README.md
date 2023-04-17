@@ -67,6 +67,18 @@ puts result3.date.timezone # nil
 puts result3.date.unix_time # nil
 ```
 
+Learning Structs store meta data about the shape of the hash from the examples provided.
+This can be used with tapioca custom DSL compilers to generate sorbet types
+
+```ruby
+MyLoadedStruct = Class.new(CamelSnakeStruct)
+MyLoadedStruct.example('data' => [{ 'name' => 'Jeff' }], 'errors' => [], 'date' => { 'timezone' => 'UTC', 'unixTime' => 0})
+
+puts MyLoadedStruct.types_meta_data
+# {"data"=>#<struct CamelSnakeStruct::Type__Meta__Data class_types=#<Set: {MyLoadedStruct::Datum}>, array=true>, "errors"=>#<struct CamelSnakeStruct::Type__Meta__Data class_types=#<Set: {}>, array=true>, "date"=>#<struct CamelSnakeStruct::Type__Meta__Data class_types=#<Set: {MyLoadedStruct::Date}>, array=false>}
+```
+
+
 ### Limitations
 
 * Expects to receive a hash

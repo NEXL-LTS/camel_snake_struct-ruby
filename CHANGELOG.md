@@ -1,3 +1,6 @@
+# 0.3.0
+* Learning Structs store meta data about the shape of the hash from the examples provided. This can be used with tapioca custom DSL compilers to generate sorbet types
+
 # 0.2.1
 * activesupport < 8.0
 

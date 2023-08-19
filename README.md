@@ -98,6 +98,8 @@ module Tapioca
       sig { override.void }
       def decorate
         root.create_path(constant) do |klass|
+          klass.create_method('to_h', parameters: [], return_type: "T::Hash[String, T.untyped]")
+
           constant.types_meta_data.each do |name, meta_data|
             classes = meta_data.classes.to_a.map{|a| [TrueClass,FalseClass].include?(a) ? "T::Boolean" : a.to_s }.uniq
             return_type = if classes.size == 1

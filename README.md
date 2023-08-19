@@ -78,6 +78,49 @@ puts MyLoadedStruct.types_meta_data
 # {"data"=>#<struct CamelSnakeStruct::Type__Meta__Data class_types=#<Set: {MyLoadedStruct::Datum}>, array=true>, "errors"=>#<struct CamelSnakeStruct::Type__Meta__Data class_types=#<Set: {}>, array=true>, "date"=>#<struct CamelSnakeStruct::Type__Meta__Data class_types=#<Set: {MyLoadedStruct::Date}>, array=false>}
 ```
 
+```ruby
+# typed: true
+
+module Tapioca
+  module Compilers
+    class CamelSnakeStructCompiler < Tapioca::Dsl::Compiler
+      extend T::Sig
+
+      ConstantType = type_member {{ fixed: T.class_of(CamelSnakeStruct) }}
+
+      sig { override.returns(T::Enumerable[Module]) }
+      def self.gather_constants
+        all_classes.select do |c| 
+          c < ::CamelSnakeStruct && !c.types_meta_data.empty?
+        end
+      end
+
+      sig { override.void }
+      def decorate
+        root.create_path(constant) do |klass|
+          constant.types_meta_data.each do |name, meta_data|
+            classes = meta_data.classes.to_a.map{|a| [TrueClass,FalseClass].include?(a) ? "T::Boolean" : a.to_s }.uniq
+            return_type = if classes.size == 1
+              classes.first.to_s
+            else
+              "T.any(#{classes.join(', ')})"
+            end
+            if meta_data.array
+              klass.create_method(name.to_s, parameters: [], return_type: "T::Array[#{return_type}]")
+            elsif return_type == 'NilClass' || return_type == 'String'
+              klass.create_method(name.to_s, parameters: [], return_type: 'T.nilable(String)')
+            else
+              klass.create_method(name.to_s, parameters: [], return_type: return_type)
+            end
+            klass.create_method("#{name}?", parameters: [], return_type: 'T::Boolean')
+          end
+        end
+      end
+    end
+  end
+end
+```
+
 
 ### Limitations
 

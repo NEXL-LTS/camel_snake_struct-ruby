@@ -1,18 +1,18 @@
 RSpec.describe CamelSnakeStruct do
   context 'when once of structs' do
     it "responds correctly to scalar values" do
-      result = described_class.new('version' => 1, 'rubyVersion' => '2.5.0')
+      result = described_class.new('version' => 1, 'rubyVersion' => '2.5.0', 'is mri' => true)
 
       expect(result).to have_attributes(
-        version: 1, ruby_version: "2.5.0", rubyVersion: "2.5.0"
+        version: 1, ruby_version: "2.5.0", rubyVersion: "2.5.0", is_mri: true
       )
       expect(result['version']).to eq(1)
     end
 
     it "responds correctly to missing methods" do
-      result = described_class.new('version' => 1, 'rubyVersion' => '2.5.0')
+      result = described_class.new('version' => 1, 'rubyVersion' => '2.5.0', 'is mri' => true)
 
-      expect(result).to have_attributes(version?: true, ruby_version?: true, unknown?: false)
+      expect(result).to have_attributes(version?: true, ruby_version?: true, unknown?: false, is_mri?: true)
 
       expect { result.unknown }.to raise_error(NoMethodError)
     end
@@ -148,6 +148,13 @@ RSpec.describe CamelSnakeStruct do
         expect(ComplexStruct.types_meta_data['complex_array']).to have_attributes(array: true)
         expect(ComplexStruct.types_meta_data['complex'].classes.size).to eq(1)
         expect(ComplexStruct.types_meta_data['complex'].classes.first.superclass).to eq(described_class)
+      end
+
+      it 'does not store types for odd types' do
+        EdgeCaseStruct = Class.new(described_class)
+        EdgeCaseStruct.example('2' => { 'num' => 1 }, ':' => true, ' a' => 'no space')
+
+        expect(EdgeCaseStruct.types_meta_data.keys).to be_empty
       end
     end
   end

@@ -1,3 +1,4 @@
+# 0.3.2
 * fix handling of "@" in keys
 
 # 0.3.1

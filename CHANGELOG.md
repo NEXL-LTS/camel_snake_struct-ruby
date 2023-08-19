@@ -1,3 +1,5 @@
+* fix handling of "@" in keys
+
 # 0.3.1
 * handle situation where the key of the hash will not make a valid method, EG { "2020-01-02 19:00:00 UTC" => [""] } 
 

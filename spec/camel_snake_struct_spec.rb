@@ -1,10 +1,10 @@
 RSpec.describe CamelSnakeStruct do
   context 'when once of structs' do
     it "responds correctly to scalar values" do
-      result = described_class.new('version' => 1, 'rubyVersion' => '2.5.0', 'is mri' => true)
+      result = described_class.new('version' => 1, 'rubyVersion' => '2.5.0', 'is mri' => true, '@java' => nil)
 
       expect(result).to have_attributes(
-        version: 1, ruby_version: "2.5.0", rubyVersion: "2.5.0", is_mri: true
+        version: 1, ruby_version: "2.5.0", rubyVersion: "2.5.0", is_mri: true, java: nil
       )
       expect(result['version']).to eq(1)
     end

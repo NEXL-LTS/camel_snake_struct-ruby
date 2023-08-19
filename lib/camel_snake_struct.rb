@@ -45,7 +45,7 @@ class CamelSnakeStruct
   def initialize(hash)
     @_raw_hash = hash&.to_h || {}
     @_method_to_key = @_raw_hash.keys.each_with_object({}) do |key, mapping|
-      if key =~ /^[A-Za-z]/
+      if key.gsub('@', '') =~ /^[A-Za-z]/
         normalize_key = key.gsub('@', '').gsub(/\.|\s/, '_')
         mapping[normalize_key] = key
         mapping[normalize_key.underscore] = key

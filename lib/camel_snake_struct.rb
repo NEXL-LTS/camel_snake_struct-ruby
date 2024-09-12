@@ -30,15 +30,19 @@ class CamelSnakeStruct
 
   def self.store_meta_data(example_class, m_name, result)
     if result.is_a?(Array)
-      if result.length > 0
-        types_meta_data = (example_class.types_meta_data[m_name] ||= Type__Meta__Data.new(Set.new, false))
-        types_meta_data.array = true
-        result.map(&:class).each { |c| types_meta_data.class_types << c }
-      end
+      add_array_meta_data(example_class, m_name, result)
     else
       types_meta_data = (example_class.types_meta_data[m_name] ||= Type__Meta__Data.new(Set.new, false))
       types_meta_data.class_types << result.class
     end
+  end
+
+  def self.add_array_meta_data(example_class, m_name, result)
+    return if result.length == 0
+
+    types_meta_data = (example_class.types_meta_data[m_name] ||= Type__Meta__Data.new(Set.new, false))
+    types_meta_data.array = true
+    result.map(&:class).each { |c| types_meta_data.class_types << c }
   end
 
   def self.types_meta_data

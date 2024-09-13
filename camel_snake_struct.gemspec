@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = "camel_snake_struct"
-  spec.version       = "0.3.2"
+  spec.version       = "0.3.3"
   spec.authors       = ["Grant Petersen-Speelman"]
   spec.email         = ["grant@nexl.io"]
 
